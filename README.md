@@ -3,7 +3,7 @@
    ## License
    This project is licensed under the [MIT License](LICENSE).
 ## [User Stories](reports/week2/user-stories.md)
-## [Figma Interactive Prototype] https://www.figma.com/proto/BK4oKfBZo6r8RxjTanLQ3z/Untitled?node-id=0-1&t=3PdFw5wmGupLDKLm-1
+## [Figma Interactive Prototype](https://www.figma.com/proto/BK4oKfBZo6r8RxjTanLQ3z/Untitled?node-id=0-1&t=3PdFw5wmGupLDKLm-1)
 ## Documentation
 - [Week 2 README](reports/week2/README.md)
 - [MVP v0 Report](reports/week2/mvp-v0-report.md)
