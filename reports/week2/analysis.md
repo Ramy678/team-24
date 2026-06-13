@@ -1,4 +1,4 @@
-# Reports/week2/analysis
+# reports/week2/analysis
 
 ## Learning Points
 
