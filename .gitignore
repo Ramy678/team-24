@@ -1,0 +1,40 @@
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Dependencies
+node_modules/
+vendor/
+.python-version
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# Logs
+*.log
+logs/
+
+# Build artifacts
+dist/
+build/
+target/
+out/
+
+# Temporary files
+*.tmp
+*.temp
+.cache/
+
+# Secrets
+*.key
+*.pem
+*.crt
+.secrets/
