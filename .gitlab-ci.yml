@@ -1,0 +1,17 @@
+stages:
+  - test
+
+lychee:
+  stage: test
+  image:
+    name: lycheeverse/lychee:latest
+    entrypoint: [""]
+  script:
+    - lychee --config .lychee.toml --format markdown --output lychee-output.md .
+  artifacts:
+    when: always
+    paths:
+      - lychee-output.md
+    expire_in: 1 week
+  only:
+    - main
