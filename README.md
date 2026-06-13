@@ -7,7 +7,7 @@
 ## Documentation
 - [Week 2 README](reports/week2/README.md)
 - [MVP v0 Report](reports/week2/mvp-v0-report.md)
-## [Customer transcript](Meet_Meeting_with_the_customer_2.md)
-## [Customer meeting summary](Reports_week2_customer-meeting-summary.md)
-## [Week 2 analysis](Reports_week2_analysis)
-## [LLM report](Reports_week2_llm-report.md)
+## [Customer transcript](reports/week2/Meet_Meeting_with_the_customer_2.md)
+## [Customer meeting summary](reports/week2/customer-meeting-summary.md)
+## [Week 2 analysis](reports/week2/analysis)
+## [LLM report](reports/week2/llm-report.md)
