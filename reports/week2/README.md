@@ -14,10 +14,10 @@
 - [LLM Report](llm-report.md)
 
 ## Prototype (Figma)
-https://www.figma.com/design/BK4oKfBZo6r8RxjTanLQ3z/Untitled?t=Dx8jl21S5zCeA3az-0
+[Figma Prototype](https://www.figma.com/design/BK4oKfBZo6r8RxjTanLQ3z/Untitled?t=Dx8jl21S5zCeA3az-0)
 
 ## MVP v0 deployment
-- **Deployment URL:** https://keen-pegasus-a95a6a.netlify.app/preferences.html
+- **Deployment URL:** https://keen-pegasus-a95a6a.netlify.app/
 - **Run instructions:** Open the link above. No installation required.
 - **Video demonstration:** https://youtu.be/CKgT0l3MgDk?si=0FWBhFiLGvoZRtDo
 
@@ -53,10 +53,10 @@ Full implementation of these stories is planned for MVP v1.
 
 ## Links verification (Lychee)
 - **Configuration:** [.lychee.toml](../../.lychee.toml)
-- **Latest pipeline:** [Insert CI/CD link here]
+- **Latest pipeline:** 
 - **Excluded links justification:** `http://localhost.*` (development only), `https://gitlab.com/.*/pipelines.*` (dynamic CI/CD links not publicly accessible)
 - **Manual verification date:** 2026-06-14 – all excluded links confirmed accessible 
 
 ## Merge Requests & Code Review
-- **MR Template:** `.gitlab/merge_request_templates/Default.md` 
-- **Example reviewed MR:** `.gitlab/reports/week2/images/branch-protection.png`
+- **MR Template:** [.gitlab/merge_request_templates/Default.md](../../.gitlab/merge_request_templates/Default.md)
+- **Example reviewed MR:** [PR #16 - Create .lychee.toml](https://github.com/Orderly-Team24/team-24/pull/16)
