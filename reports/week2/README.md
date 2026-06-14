@@ -14,7 +14,7 @@
 - [LLM Report](llm-report.md)
 
 ## Prototype (Figma)
-[Figma Prototype](https://www.figma.com/design/BK4oKfBZo6r8RxjTanLQ3z/Untitled?t=Dx8jl21S5zCeA3az-0)
+[Figma Prototype](https://www.figma.com/proto/BK4oKfBZo6r8RxjTanLQ3z/Untitled?node-id=0-1&t=Jd7zt0doPR8pN6OL-1)
 
 ## MVP v0 deployment
 - **Deployment URL:** https://keen-pegasus-a95a6a.netlify.app/
