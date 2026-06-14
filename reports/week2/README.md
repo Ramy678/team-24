@@ -49,7 +49,7 @@ Full implementation of these stories is planned for MVP v1.
 
 ## Customer meeting
 - [Meeting summary](customer-meeting-summary.md)
-- **Transcript published:** No – included only in Moodle PDF (customer permission obtained)
+- **Transcript published:** [Customer meeting transcript](customer-meeting-transcript.md)(customer permission obtained)
 
 ## Links verification (Lychee)
 - **Configuration:** [.lychee.toml](../../.lychee.toml)
