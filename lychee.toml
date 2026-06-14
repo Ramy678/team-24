@@ -1,0 +1,9 @@
+# Lychee link checker configuration
+
+exclude = [
+    "https://www.figma.com/*",
+    "https://keen-pegasus-a95a6a.netlify.app/"
+]
+
+max_retries = 3
+retry_wait = 30
