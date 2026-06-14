@@ -1,12 +1,16 @@
+# Lychee configuration
+
 exclude = [
-    '^http://localhost',
-    '^https://gitlab.com/.*/pipelines'
+    "http://localhost.*",
+    "https://github.com/.*/pipelines.*",
+    "https://gitlab.com/.*/pipelines.*",
 ]
 
-retry_wait = 30
+# Maximum number of retries
 max_retries = 3
 
-accept = [
-    "http",
-    "https"
-]
+# Wait time between retries (seconds)
+retry_wait = 30
+
+# Accept only http/https links
+accept = ["https?://.+"]
