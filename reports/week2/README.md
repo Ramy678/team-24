@@ -54,9 +54,13 @@ Full implementation of these stories is planned for MVP v1.
 ## Links verification (Lychee)
 
 - **Configuration:** [.lychee.toml](../../.lychee.toml)
-- **Latest pipeline:** 
-- **Excluded links justification:** `http://localhost.*` (development only), `https://github.com/.*/actions.*` (dynamic CI/CD links not publicly accessible)
-- **Manual verification date:** 2026-06-14 – all excluded links confirmed accessible ✅
+- **Latest pipeline:** [Lychee CI Run](https://github.com/Orderly-Team24/team-24/actions/runs/27505802893)
+- **Excluded links justification:** 
+  - `https://www.figma.com/*` – Figma blocks automated requests (403), excluded via `.lychee.toml`
+  - `https://keen-pegasus-a95a6a.netlify.app/*` – excluded to avoid false positives
+  - `http://localhost.*` – development environment
+  - `https://github.com/.*/actions.*` – dynamic CI/CD links
+- **Manual verification date:** 2026-06-14 – all excluded links confirmed accessible in browser 
 
 ## Merge Requests & Code Review
 - **MR Template:** [Default.md](../../.github/merge-request-templates/Default.md)
