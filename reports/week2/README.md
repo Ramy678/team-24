@@ -31,7 +31,7 @@ https://www.figma.com/design/BK4oKfBZo6r8RxjTanLQ3z/Untitled?t=Dx8jl21S5zCeA3az-
 
 ### Prototype (Figma)
 The prototype covers the following user story IDs:
-**US-002, US-004, US-005**
+**US-001, US-002, US-004, US-005**
 
 It demonstrates:
 - Onboarding / preferences screen
@@ -41,6 +41,7 @@ It demonstrates:
 
 ### MVP v0 (technical foundation)
 The deployed MVP v0 establishes the client-side infrastructure for:
+- **US-001** - Propose dishes according to the budget
 - **US-004** – Propose dishes according to preferences
 - **US-005** - No allergen suggestions
 
@@ -54,7 +55,7 @@ Full implementation of these stories is planned for MVP v1.
 - **Configuration:** [.lychee.toml](../../.lychee.toml)
 - **Latest pipeline:** [Insert CI/CD link here]
 - **Excluded links justification:** `http://localhost.*` (development only), `https://gitlab.com/.*/pipelines.*` (dynamic CI/CD links not publicly accessible)
-- **Manual verification date:** 2026-06-14 – all excluded links confirmed accessible ✅
+- **Manual verification date:** 2026-06-14 – all excluded links confirmed accessible 
 
 ## Merge Requests & Code Review
 - **MR Template:** `.gitlab/merge_request_templates/Default.md` 
