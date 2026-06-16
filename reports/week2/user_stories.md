@@ -165,9 +165,25 @@ Only administrators should have access to analytics.
 
 ---
 
+## US-011: Upload photo of a menu
+
+**Requirement status:** Active   
+**MoSCoW priority:** Must  
+
+As an authorized user, 
+I want to upload photo of a menu from the gallery,
+so that I can receive a recommendation.
+
+### Noteas and constraints
+User should upload photo, then we need to extract dish names and prices
+
+---
+
 # Initial proposed MVP v1 scope
 
 - US-004
 - US-005
+- US-011
 
 > **Removed from MVP v1:** US-001 (Propose dishes according to the budget), US-002 (Ability to sign in)
+> **Added to MVP v1:** US-011 (Upload photo of a menu)
