@@ -1,0 +1,16 @@
+from fastapi import FastAPI
+from ai_service import recommend
+
+app = FastAPI()
+
+@app.post("/recommend")
+def get_recommendation(data: dict):
+
+    result = recommend(
+        data["menu"],
+        data["preferences"]
+    )
+
+    return {
+        "recommendation": result
+    }
