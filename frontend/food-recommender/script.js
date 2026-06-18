@@ -39,22 +39,6 @@ function getMockData() {
                 description: 'Rich chicken broth with homemade noodles and fresh herbs',
                 ingredients: ['Chicken', 'Noodles', 'Carrots', 'Onion', 'Herbs', 'Celery'],
                 reason: 'Within your budget • No allergens'
-            },
-            {
-                id: 2,
-                name: 'Greek Salad with Feta Cheese',
-                price: 420,
-                description: 'Fresh vegetables with olive oil, oregano and feta cheese',
-                ingredients: ['Tomatoes', 'Cucumbers', 'Bell Pepper', 'Red Onion', 'Feta', 'Olives', 'Oregano'],
-                reason: 'Within your budget • Vegetarian'
-            },
-            {
-                id: 3,
-                name: 'Grilled Salmon Steak with Vegetables',
-                price: 890,
-                description: 'Tender salmon steak with grilled vegetables and lemon juice',
-                ingredients: ['Salmon', 'Zucchini', 'Eggplant', 'Bell Pepper', 'Lemon', 'Rosemary'],
-                reason: 'Popular dish • Chef\'s recommendation'
             }
         ]
     };
