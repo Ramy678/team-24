@@ -19,12 +19,12 @@ documents = []
 
 for item in menu:
     text = f"""
-    Name: {item['name']}
-    Price: {item['price']}
-    Category: {item['category']}
-    Ingredients: {', '.join(item['ingredients'])}
-    Protein: {item['protein']}
-    Calories: {item['calories']}
+    Name: {item.get('name', 'Unknown')}
+    Price: {item.get('price', 'N/A')}
+    Category: {item.get('category', 'N/A')}
+    Ingredients: {', '.join(item.get('ingredients', []))}
+    Protein: {item.get('protein', 'N/A')}
+    Calories: {item.get('calories', 'N/A')}
     """
 
     documents.append(text)
