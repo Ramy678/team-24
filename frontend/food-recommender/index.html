@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orderly - Food Recommender</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>Orderly</h1>
+            <nav>
+                <a href="#">Home</a>
+                <a href="#">Menu</a>
+                <a href="#">Profile</a>
+            </nav>
+        </div>
+    </header>
+
+
+    <main class="container">
+        <section id="recommendations-section">
+            <h2>🔥 Recommendations for you</h2>
+            <p class="subtitle">Personal recommendations based on your preferences</p>
+
+
+            <div id="loading-spinner" class="spinner-container">
+                <div class="spinner"></div>
+                <p>Loading recommendations...</p>
+            </div>
+
+            <div id="recommendations-container" style="display: none;">
+                <div id="dishes-grid"></div>
+            </div>
+
+
+            <div id="error-message" class="message error" style="display: none;">
+                ⚠️ Failed to load recommendations. Please try again later.
+            </div>
+
+            <div id="no-recommendations" class="message info" style="display: none;">
+                No recommendations yet. Fill out your profile or upload a menu.
+            </div>
+        </section>
+    </main>
+
+
+    <footer>
+        <div class="container">
+            <p>© 2026 Orderly.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
