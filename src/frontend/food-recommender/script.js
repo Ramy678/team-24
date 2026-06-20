@@ -1,8 +1,21 @@
+// Reads message from the optional input, hits POST {API_RECOMMENDER}/display/recommendations,
+// and renders the response.
+
+const API_RECOMMENDER =
+    (window.ORDERLY_CONFIG && window.ORDERLY_CONFIG.API_RECOMMENDER) || "";
+
+document.addEventListener('DOMContentLoaded', () => {
+    const btn = document.getElementById('get-recs-btn');
+    if (btn) btn.addEventListener('click', loadRecommendations);
+    loadRecommendations();
+});
+
 async function loadRecommendations() {
     const spinner = document.getElementById('loading-spinner');
     const container = document.getElementById('recommendations-container');
     const error = document.getElementById('error-message');
     const noRecs = document.getElementById('no-recommendations');
+    const errorText = document.getElementById('error-message-text');
 
     spinner.style.display = 'block';
     container.style.display = 'none';
@@ -10,8 +23,26 @@ async function loadRecommendations() {
     noRecs.style.display = 'none';
 
     try {
-        const data = getMockData();
-        await sleep(800);
+        const msgEl = document.getElementById('user-message');
+        const message = msgEl && msgEl.value ? msgEl.value.trim() : "";
+
+        const url = API_RECOMMENDER + '/display/recommendations';
+        const response = await fetch(url, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: message || "Recommend a dish" }),
+        });
+
+        if (!response.ok) {
+            let detail = 'HTTP ' + response.status;
+            try {
+                const body = await response.json();
+                if (body && body.detail) detail = body.detail;
+            } catch (_) { /* keep generic */ }
+            throw new Error(detail);
+        }
+
+        const data = await response.json();
         spinner.style.display = 'none';
 
         if (!data.recommendations || data.recommendations.length === 0) {
@@ -26,22 +57,8 @@ async function loadRecommendations() {
         console.error('Error loading the recommendations:', err);
         spinner.style.display = 'none';
         error.style.display = 'block';
+        if (errorText) errorText.textContent = err.message || String(err);
     }
-}
-
-function getMockData() {
-    return {
-        recommendations: [
-            {
-                id: 1,
-                name: 'Chicken Soup with Homemade Noodles',
-                price: 350,
-                description: 'Rich chicken broth with homemade noodles and fresh herbs',
-                ingredients: ['Chicken', 'Noodles', 'Carrots', 'Onion', 'Herbs', 'Celery'],
-                reason: 'Within your budget • No allergens'
-            }
-        ]
-    };
 }
 
 function renderDishes(dishes) {
@@ -52,22 +69,34 @@ function renderDishes(dishes) {
         const card = document.createElement('div');
         card.className = 'dish-card';
 
+        const price = (dish.price === null || dish.price === undefined)
+            ? ''
+            : `<div class="price">${escapeHtml(dish.price)} $</div>`;
+
         card.innerHTML = `
             <div class="card-content">
-                <h3>${dish.name}</h3>
-                <div class="price">${dish.price} $</div>
-                <div class="description">${dish.description}</div>
-                ${dish.ingredients ? `<div class="ingredients"> ${dish.ingredients.join(' • ')}</div>` : ''}
-                ${dish.reason ? `<div class="reason"> ${dish.reason}</div>` : ''}
+                <h3>${escapeHtml(dish.name || '')}</h3>
+                ${price}
+                <div class="description">${escapeHtml(dish.description || '')}</div>
+                ${dish.ingredients && dish.ingredients.length
+                    ? `<div class="ingredients"> ${dish.ingredients.map(escapeHtml).join(' • ')}</div>`
+                    : ''}
+                ${dish.reason
+                    ? `<div class="reason"> ${escapeHtml(dish.reason)}</div>`
+                    : ''}
             </div>
         `;
-
         grid.appendChild(card);
     });
 }
 
-function sleep(ms) {
-    return new Promise(resolve => setTimeout(resolve, ms));
+// Tiny HTML escaper to avoid XSS via AI-generated text.
+function escapeHtml(s) {
+    if (s === null || s === undefined) return '';
+    return String(s)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
 }
-
-document.addEventListener('DOMContentLoaded', loadRecommendations);

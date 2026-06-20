@@ -11,8 +11,9 @@
         <div class="container">
             <h1>Orderly</h1>
             <nav>
-                <a href="#">Home</a>
-                <a href="#">Menu</a>
+                <a href="/">Home</a>
+                <a href="/food-recommender/">Menu</a>
+                <a href="/photo_from_gallery/">Upload</a>
                 <a href="#">Profile</a>
             </nav>
         </div>
@@ -24,15 +25,15 @@
             <p class="subtitle">Select a photo of the menu from your gallery to upload for processing</p>
 
             <div class="upload-box">
-                <input type="file" id="menu-photo-input" accept="image/jpeg,image/png">
+                <input type="file" id="menu-photo-input" accept="image/jpeg,image/png,image/webp,image/heic,image/heif">
                 <button id="upload-btn">Choose Photo</button>
-                <p class="hint">Supported formats: JPEG, PNG • Max size: 8 MB</p>
+                <p class="hint">Supported formats: JPEG, PNG, WEBP, HEIC • Max size: 8 MB</p>
 
                 <div id="photo-preview">
                     <img id="preview-image" src="#" alt="Menu preview">
                     <p id="file-info"></p>
                     <div class="actions">
-                        <button id="upload-submit-btn">Send for processing</button>
+                        <button id="upload-submit-btn" disabled>Send for processing</button>
                         <button id="remove-photo-btn">Remove</button>
                     </div>
                 </div>
@@ -45,10 +46,11 @@
 
     <footer>
         <div class="container">
-            <p>© 2026 Orderly. All rights reserved.</p>
+            <p>© 2026 Orderly.</p>
         </div>
     </footer>
 
+    <script src="/config.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

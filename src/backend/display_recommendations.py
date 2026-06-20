@@ -1,27 +1,33 @@
 from fastapi import APIRouter
 from pydantic import BaseModel
-from ai_service import get_recommendation
 
-router = APIRouter(
-    prefix="/display",
-    tags=["display"]
-)
+from ai_service import get_recommendation_struct
+
+router = APIRouter(prefix="/display", tags=["display"])
+
 
 class RecommendationRequest(BaseModel):
-    message: str
+    message: str = ""
+
 
 @router.post("/recommendations")
 def display_recommendations(data: RecommendationRequest):
-    recommendation_text = get_recommendation(data.message)
+    """
+    Return a single recommendation formatted for the frontend card UI.
+
+    Frontend expects:
+        { recommendations: [{ id, name, price, description, ingredients, reason }] }
+    """
+    pick = get_recommendation_struct(data.message)
     return {
         "recommendations": [
             {
                 "id": 1,
-                "name": recommendation_text,
-                "price": None,
-                "description": "",
-                "ingredients": [],
-                "reason": "Recommended by AI"
+                "name": pick["name"],
+                "price": pick["price"],
+                "description": pick["description"],
+                "ingredients": pick["ingredients"],
+                "reason": pick["reason"],
             }
         ]
     }

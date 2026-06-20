@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orderly — Menu Recommender</title>
+    <link rel="stylesheet" href="/food-recommender/style.css">
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; margin: 0; color: #222; background: #fafafa; }
+        .hero { max-width: 760px; margin: 80px auto; padding: 32px; text-align: center; }
+        .hero h1 { font-size: 48px; margin: 0 0 12px; }
+        .hero p  { font-size: 18px; color: #555; margin: 0 0 32px; }
+        .cards { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; max-width: 760px; margin: 0 auto; padding: 0 32px 80px; }
+        .card { background: #fff; border: 1px solid #e5e5e5; border-radius: 12px; padding: 24px; text-decoration: none; color: inherit; transition: transform 0.15s, box-shadow 0.15s; }
+        .card:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.06); }
+        .card h2 { margin: 0 0 8px; }
+        .card p  { margin: 0; color: #666; }
+        @media (max-width: 600px) { .cards { grid-template-columns: 1fr; } .hero h1 { font-size: 36px; } }
+    </style>
+</head>
+<body>
+    <section class="hero">
+        <h1>🍽️ Orderly</h1>
+        <p>Snap a menu, get top-3 dish recommendations tuned to your taste, budget, and allergies.</p>
+    </section>
+    <section class="cards">
+        <a class="card" href="/food-recommender/">
+            <h2>🔥 Get recommendations</h2>
+            <p>Tell us what you're in the mood for and we'll suggest the best dish.</p>
+        </a>
+        <a class="card" href="/photo_from_gallery/">
+            <h2>📸 Upload menu photo</h2>
+            <p>Send us a photo of the menu and we'll read it for you.</p>
+        </a>
+    </section>
+</body>
+</html>
