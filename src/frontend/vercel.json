@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    { "source": "/food-recommender", "destination": "/food-recommender/index.html" },
+    { "source": "/food-recommender/", "destination": "/food-recommender/index.html" },
+    { "source": "/photo_from_gallery", "destination": "/photo_from_gallery/index.html" },
+    { "source": "/photo_from_gallery/", "destination": "/photo_from_gallery/index.html" }
+  ]
+}
