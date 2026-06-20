@@ -11,8 +11,9 @@
         <div class="container">
             <h1>Orderly</h1>
             <nav>
-                <a href="#">Home</a>
-                <a href="#">Menu</a>
+                <a href="/">Home</a>
+                <a href="./food-recommender/">Menu</a>
+                <a href="./photo_from_gallery/">Upload</a>
                 <a href="#">Profile</a>
             </nav>
         </div>
@@ -24,6 +25,16 @@
             <h2>🔥 Recommendations for you</h2>
             <p class="subtitle">Personal recommendations based on your preferences</p>
 
+            <div class="user-input">
+                <label for="user-message">What are you in the mood for?</label>
+                <input
+                    type="text"
+                    id="user-message"
+                    placeholder="e.g. something light and vegetarian under $15"
+                    autocomplete="off"
+                >
+                <button id="get-recs-btn" type="button">Get recommendations</button>
+            </div>
 
             <div id="loading-spinner" class="spinner-container">
                 <div class="spinner"></div>
@@ -36,7 +47,7 @@
 
 
             <div id="error-message" class="message error" style="display: none;">
-                ⚠️ Failed to load recommendations. Please try again later.
+                ⚠️ <span id="error-message-text">Failed to load recommendations. Please try again later.</span>
             </div>
 
             <div id="no-recommendations" class="message info" style="display: none;">
@@ -52,6 +63,7 @@
         </div>
     </footer>
 
+    <script src="../config.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

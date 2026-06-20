@@ -1,0 +1,26 @@
+# Netlify config for the Orderly static frontend.
+#
+# Deploy from the GitHub repo:
+#   Base directory:  src/frontend
+#   Build command:   (leave empty — pure static)
+#   Publish dir:     .   (relative to base directory)
+#
+# After deploy the URLs are:
+#   https://<site>.netlify.app/                     → landing page
+#   https://<site>.netlify.app/food-recommender/    → recommendations UI
+#   https://<site>.netlify.app/photo_from_gallery/  → photo upload UI
+#
+# The actual API URLs (backends) live in src/frontend/config.js.
+# Edit those BEFORE first deploy.
+
+[build]
+  base    = "src/frontend"
+  publish = "."
+  command = ""
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options       = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy        = "strict-origin-when-cross-origin"

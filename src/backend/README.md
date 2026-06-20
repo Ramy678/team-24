@@ -1,0 +1,116 @@
+# backend
+
+Recommender service for the **Orderly** menu app. Exposes a single
+recommendation endpoint backed by a swappable AI module.
+
+## Endpoints
+
+| Method | Path                       | Purpose                                                              |
+|--------|----------------------------|----------------------------------------------------------------------|
+| GET    | `/`                        | Healthcheck (used by Render).                                        |
+| POST   | `/recommend`               | Legacy. Returns `{recommendation: "free-form text"}`.                 |
+| POST   | `/display/recommendations` | Frontend-facing. Returns structured card data.                       |
+
+Interactive docs at `/docs`.
+
+## AI backends
+
+Picked at startup via `AI_BACKEND`:
+
+| Value      | What it does                                            | Requires                          |
+|------------|---------------------------------------------------------|-----------------------------------|
+| `stub`     | Deterministic fake responses (default).                 | nothing — works anywhere          |
+| `openai`   | Calls OpenAI Chat Completions API.                      | `OPENAI_API_KEY`                  |
+| `lmstudio` | Calls LM Studio's OpenAI-compatible endpoint.           | `LMSTUDIO_BASE_URL` (local-only)  |
+
+If a backend raises (no key, server down, malformed JSON), the service
+silently falls back to the stub so the demo never breaks. Render logs will
+show the warning.
+
+### Examples
+
+```bash
+# Default — stub, no setup.
+AI_BACKEND=stub uvicorn main:app --reload --port 8003
+
+# Real OpenAI.
+AI_BACKEND=openai OPENAI_API_KEY=sk-... \
+  uvicorn main:app --reload --port 8003
+
+# LM Studio running on your laptop.
+AI_BACKEND=lmstudio LMSTUDIO_BASE_URL=http://localhost:1234/v1 \
+  LMSTUDIO_MODEL="qwen/qwen3.5-9b" \
+  uvicorn main:app --reload --port 8003
+```
+
+## Environment variables
+
+| Variable             | Default                          | Purpose                                              |
+|----------------------|----------------------------------|------------------------------------------------------|
+| `AI_BACKEND`         | `stub`                           | `stub`, `openai`, or `lmstudio`.                     |
+| `OPENAI_API_KEY`     | _(unset)_                        | Required if `AI_BACKEND=openai`.                     |
+| `OPENAI_BASE_URL`    | OpenAI API                       | Override for Azure / proxies.                        |
+| `OPENAI_MODEL`       | `gpt-4o-mini`                    | Any chat-completions model.                          |
+| `LMSTUDIO_BASE_URL`  | `http://localhost:1234/v1`       | LM Studio endpoint.                                  |
+| `LMSTUDIO_API_KEY`   | `lm-studio`                      | LM Studio ignores it but the client requires a value.|
+| `LMSTUDIO_MODEL`     | `qwen/qwen3.5-9b`                | Whatever is currently loaded in LM Studio.           |
+| `ALLOWED_ORIGINS`    | `*`                              | Comma-separated CORS origins.                        |
+| `PORT`               | `8000`                           | Listening port (set automatically by Render).        |
+
+## Run locally
+
+```bash
+cd src/backend
+python3.12 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+
+# Stub backend (no setup, demo works out of the box).
+uvicorn main:app --reload --port 8003
+
+# Or with the real OpenAI backend:
+AI_BACKEND=openai OPENAI_API_KEY=sk-... uvicorn main:app --reload --port 8003
+```
+
+Test:
+
+```bash
+curl http://127.0.0.1:8003/                                                # healthcheck
+curl -X POST http://127.0.0.1:8003/display/recommendations \
+  -H 'Content-Type: application/json' \
+  -d '{"message": "something vegetarian and cheap"}'
+# {"recommendations":[{"id":1,"name":"Mushroom risotto",...}]}
+```
+
+## Deploy to Render
+
+1. **New → Web Service** on Render, pick the repo.
+2. Configure:
+   - **Root directory:** `src/backend`
+   - **Runtime:** Docker (Render auto-detects the `Dockerfile`)
+   - **Instance type:** Free
+   - **Environment variables:**
+     - `AI_BACKEND` → `stub` (default) or `openai`
+     - `OPENAI_API_KEY` → your key (only if `AI_BACKEND=openai`)
+     - `ALLOWED_ORIGINS` → `https://<your-site>.netlify.app`
+3. **Create Web Service**. Once live you'll get a URL like
+   `https://orderly-recommender.onrender.com`.
+4. Paste that URL into `src/frontend/config.js` as `API_RECOMMENDER`,
+   alongside the upload-menu URL in `API_UPLOAD`.
+
+## What's NOT in this service anymore
+
+The previous version imported `pytesseract` and called LM Studio directly,
+which crashed on Linux and required the model to run on the same host. Both
+have been moved out:
+
+- `ocr_reader.py` is now unused by the live endpoints. It still works for
+  the `test_parser.py` script.
+- `ai_service.py` no longer touches LM Studio by default. Set
+  `AI_BACKEND=lmstudio` to bring it back locally.
+- `retriever.py` (LangChain + Chroma) is also unused by the live endpoints
+  but kept in the repo for the offline scripts in `test_*.py`.
+
+If you want to put RAG back into the live service, the seam is
+`ai_service._lmstudio_backend` — extend it to call the retriever before
+hitting the model.

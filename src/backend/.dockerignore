@@ -1,0 +1,10 @@
+__pycache__/
+*.pyc
+.pytest_cache/
+tests/
+test_*.py
+data/
+food_database/
+.git/
+.venv/
+*.md
