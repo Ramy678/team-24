@@ -1,5 +1,6 @@
 # Minimal Dockerfile for the recommender service.
-# Used by Render / Railway / Fly.io, or `docker build` + `docker run` locally.
+# Build context must be the repository root (Render defaults to .), so we
+# COPY files using their full repo-relative paths.
 #
 # Note: this image is enough for the AI_BACKEND=stub and AI_BACKEND=openai
 # paths. AI_BACKEND=lmstudio talks to a model on your laptop over HTTP, so
@@ -9,13 +10,13 @@ FROM python:3.12-slim
 WORKDIR /app
 
 # Install deps first so this layer is cached when only source changes.
-COPY requirements.txt .
+COPY src/backend/requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Source files needed at runtime.
-COPY main.py .
-COPY ai_service.py .
-COPY display_recommendations.py .
+COPY src/backend/main.py ./
+COPY src/backend/ai_service.py ./
+COPY src/backend/display_recommendations.py ./
 
 # Run as non-root for safety.
 RUN useradd --create-home appuser && chown -R appuser /app

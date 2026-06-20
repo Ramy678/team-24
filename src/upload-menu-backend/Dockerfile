@@ -1,15 +1,16 @@
 # Minimal Dockerfile for the upload-menu-backend service.
-# Used by Render, Railway, Fly.io, etc. — or `docker build` + `docker run` locally.
+# Build context must be the repository root (Render defaults to .), so we
+# COPY files using their full repo-relative paths.
 FROM python:3.12-slim
 
 WORKDIR /app
 
 # Install deps first so this layer is cached when only source changes.
-COPY requirements.txt .
+COPY src/upload-menu-backend/requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Source.
-COPY main.py .
+COPY src/upload-menu-backend/main.py ./
 
 # Run as non-root for safety.
 RUN useradd --create-home appuser && chown -R appuser /app
