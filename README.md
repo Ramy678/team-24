@@ -6,7 +6,7 @@ A web app that recommends dishes based on your preferences, budget, allergies, a
 
 - Frontend: https://frontend-pearl-sigma-1diis9tsn9.vercel.app
 - Recommender API: https://team-24.onrender.com
-- Upload API: https://team-24-1.onrender.com
+- Upload API endpoint: `POST https://team-24-1.onrender.com/upload-menu`
 
 > Free-tier services on Render may take 5-15s to wake up after inactivity.
 
