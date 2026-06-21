@@ -3,7 +3,7 @@
 ## Project information
 - **Name:** Orderly – Food Recommendation App
 - **Short description:** A web app that helps users choose dishes from restaurant menus based on their preferences and budget.
-- **License:** [MIT](../LICENSE) 
+- **License:** [MIT](../../LICENSE) 
 
 # User Stories & PBI Summary
 
@@ -22,8 +22,8 @@
 - US-004 and US-005 moved to next sprint
 
 ## Links
-- Historical: [`reports/week2/user_stories.md`](week2/user_stories.md)
-- Current: [`docs/user-stories.md`](../docs/user-stories.md)
+- Historical: [`reports/week2/user_stories.md`](../week2/user_stories.md)
+- Current: [`docs/user-stories.md`](../../docs/user-stories.md)
 - Closed issues: [#62](https://github.com/Orderly-Team24/team-24/issues/62), [#71](https://github.com/Orderly-Team24/team-24/issues/71), [#72](https://github.com/Orderly-Team24/team-24/issues/72), [#73](https://github.com/Orderly-Team24/team-24/issues/73), [#75](https://github.com/Orderly-Team24/team-24/issues/75), [#92](https://github.com/Orderly-Team24/team-24/issues/92), [#93](https://github.com/Orderly-Team24/team-24/issues/93), [#94](https://github.com/Orderly-Team24/team-24/issues/94), [#95](https://github.com/Orderly-Team24/team-24/issues/95), [#122](https://github.com/Orderly-Team24/team-24/issues/122)
 
 ## Product Backlog
@@ -86,7 +86,7 @@ Completed. Delivered US-011 (photo upload + AI recommendations).
 
 ### Next (Sprint 2 — MVP v2):
 - US-002 (Login), US-004 (Preferences), US-005 (Allergens)
-- [docs/roadmap.md](../docs/roadmap.md)
+- [docs/roadmap.md](../../docs/roadmap.md)
 
 ### Contribution traceability
 | Team Member | Issues | PRs | Reviews |
@@ -100,25 +100,25 @@ Completed. Delivered US-011 (photo upload + AI recommendations).
 
 ### Links
 - **SemVer release (MVP v1):** [v0.1.0](https://github.com/Orderly-Team24/team-24/releases/tag/v0.1.0)
-- **CHANGELOG.md:** [CHANGELOG.md](../CHANGELOG.md)
-- **Process_Requirements.md:** [Process_Requirements.md](https://gitlab.pg.innopolis.university/swp_26/swp_26/-/blob/main/Process_Requirements.md#user-stories-requirement-status-and-decomposition)
-- **Roadmap:** [docs/roadmap.md](../docs/roadmap.md)
-- **Definition of Done:** [docs/definition-of-done.md](../docs/definition-of-done.md)
+- **CHANGELOG.md:** [CHANGELOG.md](../../CHANGELOG.md)
+- **Process_Requirements.md:** [Process Requirements](Process_Requirements.md)
+- **Roadmap:** [docs/roadmap.md](../../docs/roadmap.md)
+- **Definition of Done:** [docs/definition-of-done.md](../../docs/definition-of-done.md)
 - **MVP v1 deployment (runnable artifact):** [v0.1.0](https://frontend-pearl-sigma-1diis9tsn9.vercel.app/)
-- **Access/Run instructions:** [README.md](../README.md)
+- **Access/Run instructions:** [README.md](../../README.md)
 - **Public sanitized video demonstration:** [Link to video](https://drive.google.com/file/d/1g1bFizNBVim8eWnxBqWMCoE8kA2pbjC1/view?usp=drive_link)
-- **Customer review transcript (sanitized, English):** [Customer Meeting Transcript](week3/customer-meeting-transcript.txt)
-- **Customer review summary:** [Customer Review Summary](week3/customer-review-summary.md)
-- **Week 3 reflection:** [Week 3 Reflection](week3/reflection.md)
-- **Retrospective:** [Week 3 Retrospective](week3/retrospective.md)
-- **LLM report:** [LLM Report](week3/llm-report.md)
+- **Customer review transcript (sanitized, English):** [Customer Meeting Transcript](customer-meeting-transcript.md)
+- **Customer review summary:** [Customer Review Summary](customer-review-summary.md)
+- **Week 3 reflection:** [Week 3 Reflection](reflection.md)
+- **Retrospective:** [Week 3 Retrospective](retrospective.md)
+- **LLM report:** [LLM Report](llm-report.md)
 
 ### Issue Templates
 - [Pull Request Template](../../.github/pull_request_template.md)
-- [User Story Template](../.github/ISSUE_TEMPLATE/user-story.md)
-- [Bug Report Template](../.github/ISSUE_TEMPLATE/bug-report.md)
-- [Course Task Template](../.github/ISSUE_TEMPLATE/course-task.md)
-- [Other PBI Template](../.github/ISSUE_TEMPLATE/other-PBI.md)
+- [User Story Template](../../.github/ISSUE_TEMPLATE/user-story.md)
+- [Bug Report Template](../../.github/ISSUE_TEMPLATE/bug-report.md)
+- [Course Task Template](../../.github/ISSUE_TEMPLATE/course-task.md)
+- [Other PBI Template](../../.github/ISSUE_TEMPLATE/other-PBI.md)
 
 ### Reviewed PRs (Week 3 — MVP v1)
 - [#136](https://github.com/Orderly-Team24/team-24/pull/136) — reflection (Ramy678)
