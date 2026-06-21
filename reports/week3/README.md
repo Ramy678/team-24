@@ -160,3 +160,25 @@ Completed. Delivered US-011 (photo upload + AI recommendations).
 - [#86](https://github.com/Orderly-Team24/team-24/pull/86) — course-task (dayeon761)
 - [#85](https://github.com/Orderly-Team24/team-24/pull/85) — user-stories (dayeon761)
 - [#56](https://github.com/Orderly-Team24/team-24/pull/56) — user_stories (dayeon761)
+
+### Screenshots
+**Product Backlog View**
+![Product Backlog View](images/Product%20Backlog%20view.jpg)
+
+**Sprint Backlog View**
+![Sprint Backlog View](images/Sprint%20Backlog%20view.jpg)
+
+**Sprint Milestone**
+![Sprint Milestone](images/Sprint%20milestone.jpg) 
+
+**MVP v1 Filtered / Grouped View**
+![MVP Version Field](images/MVP%20version%20field%2C%20grouped%20view%2C%20or%20filtered%20view.jpg)
+
+**SemVer Release**
+![SemVer Release](images/SemVer%20release.jpg)
+
+**Delivered MVP v1**
+![Delivered MVP v1](images/Delivered%20MVP%20v1.jpg)
+
+**Example Reviewed Issue-Linked PR**
+![Example Reviewed Issue-Linked PR](images/Example%20reviewed%20issue-linked%20PR.jpg)

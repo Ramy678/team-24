@@ -44,10 +44,11 @@ cd src/frontend && python -m http.server 8080
 ## Documentation
 
 - [User stories](docs/user-stories.md)
+- [MVP v0 Report](reports/week2/mvp-v0-report.md)
 - [CHANGELOG](CHANGELOG.md)
-- [Week 2 report](reports/week2/README.md)
-- [Week 3 report](reports/week3/README.md)
-
+- [Week 2 README](reports/week2/README.md)
+- [Week 3 README](reports/week3/README.md)
+- 
 ## License
 
 [MIT](LICENSE)
