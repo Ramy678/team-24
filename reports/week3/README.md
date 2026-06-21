@@ -114,7 +114,7 @@ Completed. Delivered US-011 (photo upload + AI recommendations).
 - **LLM report:** [LLM Report](week3/llm-report.md)
 
 ### Issue Templates
-- [Pull Request Template](../.github/pull_request_template.md)
+- [Pull Request Template](../../.github/pull_request_template.md)
 - [User Story Template](../.github/ISSUE_TEMPLATE/user-story.md)
 - [Bug Report Template](../.github/ISSUE_TEMPLATE/bug-report.md)
 - [Course Task Template](../.github/ISSUE_TEMPLATE/course-task.md)
