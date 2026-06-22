@@ -22,7 +22,7 @@ from typing import Any
 # --- shared "shape" of a recommendation ---------------------------------
 
 # A small bank of plausible suggestions so the stub returns varied results.
-_FALLBACK_POOL = [
+FALLBACK_POOL = [
     {
         "name": "Grilled salmon with lemon-dill sauce",
         "price": 18.50,
@@ -64,11 +64,11 @@ _FALLBACK_POOL = [
 def _pick_fallback(message: str) -> dict[str, Any]:
     """Deterministic hash → index so the same query returns the same dish."""
     if not message:
-        return _FALLBACK_POOL[0]
+        return FALLBACK_POOL[0]
     h = 0
     for ch in message.lower():
         h = (h * 31 + ord(ch)) & 0xFFFFFFFF
-    return _FALLBACK_POOL[h % len(_FALLBACK_POOL)]
+    return FALLBACK_POOL[h % len(FALLBACK_POOL)]
 
 
 # --- backend: stub ------------------------------------------------------
