@@ -3,6 +3,7 @@ from pydantic import BaseModel, Field
 
 from ai_service import FALLBACK_POOL, get_recommendation_struct, pick_from_pool
 from budget_filter import filter_by_budget
+from order_history import make_dish_id
 
 router = APIRouter(prefix="/display", tags=["display"])
 
@@ -55,15 +56,22 @@ def display_recommendations(data: RecommendationRequest):
     else:
         pick = get_recommendation_struct(data.message)
 
+    dish = {
+        "name":        pick["name"],
+        "price":       pick["price"],
+        "description": pick["description"],
+        "ingredients": pick["ingredients"],
+        "reason":      pick["reason"],
+    }
     return {
         "recommendations": [
             {
-                "id": 1,
-                "name": pick["name"],
-                "price": pick["price"],
-                "description": pick["description"],
-                "ingredients": pick["ingredients"],
-                "reason": pick["reason"],
+                "id":          make_dish_id(dish),
+                "name":        dish["name"],
+                "price":       dish["price"],
+                "description": dish["description"],
+                "ingredients": dish["ingredients"],
+                "reason":      dish["reason"],
             }
         ]
     }
