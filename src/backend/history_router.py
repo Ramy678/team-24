@@ -84,6 +84,11 @@ def post_order(
     """
     user_id = _user_id(x_user_id)
 
+    # A dish without a name can't be uniquely identified, so we'd lose it
+    # in history (every blank-name dish would collapse onto id=1).
+    if not (dish.name or "").strip():
+        raise HTTPException(status_code=422, detail="Dish name is required")
+
     dish_dict = dish.model_dump()
     if not dish_dict.get("id"):
         dish_dict["id"] = make_dish_id(dish_dict)

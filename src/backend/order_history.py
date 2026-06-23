@@ -54,10 +54,18 @@ _store: dict[str, list[dict[str, Any]]] = {}
 
 def _serialize(dish: dict[str, Any]) -> dict[str, Any]:
     """Return a JSON-safe copy of the dish with the canonical schema."""
+    price_raw = dish.get("price", 0)
+    # Reject NaN/inf: they survive float() but break json.dumps downstream.
+    try:
+        price = float(price_raw)
+    except (TypeError, ValueError):
+        price = 0.0
+    if price != price or price in (float("inf"), float("-inf")):  # NaN check
+        price = 0.0
     return {
         "id":          int(dish["id"]),
         "name":        str(dish.get("name", "")),
-        "price":       float(dish.get("price", 0) or 0),
+        "price":       price,
         "description": str(dish.get("description", "")),
         "ingredients": list(dish.get("ingredients", []) or []),
         "reason":      str(dish.get("reason", "")),

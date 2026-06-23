@@ -77,6 +77,31 @@ def test_post_order_preserves_client_id():
     assert resp.json()["dish"]["id"] == 4242
 
 
+def test_post_order_rejects_blank_name():
+    """Empty/whitespace name collapses to id=1 in the store — reject at the door."""
+    for bad in ["", "   ", "\n\t"]:
+        resp = client.post("/history/orders", json={"name": bad, "price": 5}, headers=HEADERS)
+        assert resp.status_code == 422, f"expected 422 for name={bad!r}, got {resp.status_code}"
+
+
+def test_post_order_rejects_missing_name():
+    resp = client.post("/history/orders", json={"price": 5}, headers=HEADERS)
+    assert resp.status_code == 422
+
+
+def test_serialize_handles_nan_price():
+    """NaN/inf in `price` must not produce JSON-invalid output."""
+    from order_history import _serialize
+    import json
+    out = _serialize({"id": 1, "name": "X", "price": float("nan")})
+    # Must be JSON-serializable (NaN would raise).
+    json.dumps(out)
+    assert out["price"] == 0.0
+    out2 = _serialize({"id": 1, "name": "X", "price": float("inf")})
+    json.dumps(out2)
+    assert out2["price"] == 0.0
+
+
 # --- GET /history/orders -----------------------------------------------
 
 
