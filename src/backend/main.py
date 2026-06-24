@@ -6,6 +6,7 @@ from ai_service import get_recommendation
 from display_recommendations import router as display_router
 from ocr_reader import extract_text
 from parser import parse_menu
+from another_option import router as another_option_router
 
 ALLOWED_ORIGINS = [o.strip() for o in os.getenv("ALLOWED_ORIGINS", "*").split(",") if o.strip()]
 
@@ -17,6 +18,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 app.include_router(display_router)
+app.include_router(another_option_router)
 
 MAX_FILE_SIZE = 8 * 1024 * 1024  # 8 MB
 
