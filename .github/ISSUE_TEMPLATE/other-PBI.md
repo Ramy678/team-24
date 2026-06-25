@@ -18,8 +18,18 @@ assignees: ''
 
 ---
 
+## Work Status
+<!-- In Progress / Done / Blocked -->
+
+---
+
 ### Description
 *What is needed to be done? Describe the task.*
+
+---
+
+## Expected Outcome
+<!-- What exactly will be done once this issue is closed. For example: "The POST /history/orders endpoint accepts a dish and returns the saved object with an ID." -->
 
 ---
 
@@ -39,3 +49,8 @@ assignees: ''
 
 ### Additional Notes
 *Additionaal info, resources, restrictions*
+
+---
+
+## Reviewer
+<!-- GitHub username of the teammate reviewing the work (not the implementer) -->
