@@ -64,6 +64,7 @@ def display_recommendations(data: RecommendationRequest):
         "reason":      pick["reason"],
     }
     return {
+        "session_id": session_id,
         "recommendations": [
             {
                 "id":          make_dish_id(dish),
