@@ -8,6 +8,7 @@ router = APIRouter(prefix="/display", tags=["display"])
 
 class RecommendationRequest(BaseModel):
     message: str = ""
+    menu: list[dict] = []
 
 
 @router.post("/recommendations")
@@ -18,7 +19,7 @@ def display_recommendations(data: RecommendationRequest):
     Frontend expects:
         { recommendations: [{ id, name, price, description, ingredients, reason }] }
     """
-    pick = get_recommendation_struct(data.message)
+    pick = get_recommendation_struct(data.message, data.menu)
     return {
         "recommendations": [
             {
