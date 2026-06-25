@@ -56,6 +56,7 @@ def display_recommendations(data: RecommendationRequest):
         pick = get_recommendation_struct(data.message)
 
     return {
+        "session_id": session_id,
         "recommendations": [
             {
                 "id": 1,
