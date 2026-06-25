@@ -7,12 +7,6 @@ assignees: ''
 
 ---
 
-### User Role / Persona
-
-### Desired Action
-
-### Expected Value
-
 ### Description
 **As a** [user role],
 **I want** [desired action],
