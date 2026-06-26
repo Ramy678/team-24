@@ -25,6 +25,7 @@ from typing import Any
 FALLBACK_POOL = [
     {
         "name": "Grilled salmon with lemon-dill sauce",
+        "cuisine": "American",
         "price": 18.50,
         "description": "Pan-seared Atlantic salmon, served with seasonal vegetables and jasmine rice.",
         "ingredients": ["salmon", "lemon", "dill", "rice", "asparagus"],
@@ -32,6 +33,7 @@ FALLBACK_POOL = [
     },
     {
         "name": "Mushroom risotto",
+        "cuisine": "Italian",
         "price": 14.00,
         "description": "Creamy Arborio rice with porcini and cremini mushrooms, finished with parmesan.",
         "ingredients": ["arborio rice", "porcini", "cremini", "parmesan", "white wine"],
@@ -39,6 +41,7 @@ FALLBACK_POOL = [
     },
     {
         "name": "Chicken pho",
+        "cuisine": "Vietnamese",
         "price": 12.50,
         "description": "Vietnamese rice-noodle soup with poached chicken, herbs, and lime.",
         "ingredients": ["chicken", "rice noodles", "ginger", "star anise", "lime", "basil"],
@@ -46,6 +49,7 @@ FALLBACK_POOL = [
     },
     {
         "name": "Lentil shepherd's pie",
+        "cuisine": "British",
         "price": 11.00,
         "description": "Brown lentils and vegetables under a creamy mashed-potato crust.",
         "ingredients": ["lentils", "carrot", "onion", "potato", "tomato"],
@@ -53,6 +57,7 @@ FALLBACK_POOL = [
     },
     {
         "name": "Margherita pizza",
+        "cuisine": "Italian",
         "price": 13.00,
         "description": "Wood-fired pizza with San Marzano tomato, fior di latte, and basil.",
         "ingredients": ["flour", "tomato", "mozzarella", "basil", "olive oil"],
@@ -87,11 +92,92 @@ def pick_from_pool(pool: list[dict[str, Any]], message: str) -> dict[str, Any]:
     return pool[h % len(pool)]
 
 
+def _preference_value(preferences: Any, key: str, default: Any = None) -> Any:
+    if preferences is None:
+        return default
+    if isinstance(preferences, dict):
+        return preferences.get(key, default)
+    return getattr(preferences, key, default)
+
+
+def _clean_list(value: Any) -> list[str]:
+    if not value:
+        return []
+    if isinstance(value, str):
+        value = [value]
+    return [str(item).strip() for item in value if str(item).strip()]
+
+
+def _format_preferences(preferences: Any) -> str:
+    cuisine = _preference_value(preferences, "cuisine") or "Any"
+    likes = _clean_list(
+        _preference_value(
+            preferences,
+            "favorite_ingredients",
+            _preference_value(preferences, "likes", []),
+        )
+    )
+    excludes = _clean_list(
+        _preference_value(
+            preferences,
+            "exclude_ingredients",
+            _preference_value(preferences, "excludes", []),
+        )
+    )
+    return (
+        "User preferences:\n"
+        f"- Cuisine: {cuisine}\n"
+        f"- Likes: {', '.join(likes) if likes else 'None'}\n"
+        f"- Excludes: {', '.join(excludes) if excludes else 'None'}\n\n"
+        "Recommend a single dish matching these preferences."
+    )
+
+
+def filter_fallback_pool_by_preferences(
+    pool: list[dict[str, Any]],
+    preferences: Any,
+) -> list[dict[str, Any]]:
+    """Filter the stub pool by excludes, then cuisine when possible.
+
+    If either preference filter would remove every dish, keep the previous
+    candidate set so stub mode still returns a recommendation.
+    """
+    candidates = list(pool)
+    excludes = [item.lower() for item in _clean_list(_preference_value(preferences, "exclude_ingredients"))]
+    if excludes:
+        without_excludes = [
+            dish
+            for dish in candidates
+            if not any(
+                excluded in str(ingredient).lower()
+                for excluded in excludes
+                for ingredient in dish.get("ingredients", [])
+            )
+        ]
+        if without_excludes:
+            candidates = without_excludes
+
+    cuisine = str(_preference_value(preferences, "cuisine", "") or "").strip().lower()
+    if cuisine:
+        cuisine_matches = [
+            dish
+            for dish in candidates
+            if cuisine in str(dish.get("cuisine", "")).lower()
+            or cuisine in str(dish.get("description", "")).lower()
+            or cuisine in str(dish.get("name", "")).lower()
+        ]
+        if cuisine_matches:
+            candidates = cuisine_matches
+
+    return candidates or list(pool)
+
+
 # --- backend: stub ------------------------------------------------------
 
 
-def _stub(user_message: str) -> dict[str, Any]:
-    return _pick_fallback(user_message)
+def _stub(user_message: str, preferences: Any = None) -> dict[str, Any]:
+    pool = filter_fallback_pool_by_preferences(FALLBACK_POOL, preferences)
+    return pick_from_pool(pool, user_message)
 
 
 # --- backend: OpenAI / LM Studio ---------------------------------------
@@ -109,6 +195,8 @@ _OPENAI_SYSTEM_PROMPT = (
 )
 
 _OPENAI_USER_TEMPLATE = """User request: {message}
+
+{preferences}
 
 Return ONLY the JSON object, nothing else."""
 
@@ -137,7 +225,14 @@ def _extract_json_object(text: str) -> dict[str, Any]:
     raise ValueError(f"Unbalanced JSON in LLM response: {text!r}")
 
 
-def _openai_compatible(user_message: str, *, base_url: str, api_key: str, model: str) -> dict[str, Any]:
+def _openai_compatible(
+    user_message: str,
+    preferences: Any = None,
+    *,
+    base_url: str,
+    api_key: str,
+    model: str,
+) -> dict[str, Any]:
     """Call any OpenAI-compatible Chat Completions endpoint."""
     from openai import OpenAI
 
@@ -146,7 +241,13 @@ def _openai_compatible(user_message: str, *, base_url: str, api_key: str, model:
         model=model,
         messages=[
             {"role": "system", "content": _OPENAI_SYSTEM_PROMPT},
-            {"role": "user", "content": _OPENAI_USER_TEMPLATE.format(message=user_message or "")},
+            {
+                "role": "user",
+                "content": _OPENAI_USER_TEMPLATE.format(
+                    message=user_message or "",
+                    preferences=_format_preferences(preferences),
+                ),
+            },
         ],
         temperature=0.7,
     )
@@ -154,22 +255,24 @@ def _openai_compatible(user_message: str, *, base_url: str, api_key: str, model:
     return _extract_json_object(content)
 
 
-def _openai_backend(user_message: str) -> dict[str, Any]:
+def _openai_backend(user_message: str, preferences: Any = None) -> dict[str, Any]:
     api_key = os.getenv("OPENAI_API_KEY")
     if not api_key:
         raise RuntimeError("AI_BACKEND=openai but OPENAI_API_KEY is not set")
     return _openai_compatible(
         user_message,
+        preferences,
         base_url=os.getenv("OPENAI_BASE_URL", "https://api.openai.com/v1"),
         api_key=api_key,
         model=os.getenv("OPENAI_MODEL", "gpt-4o-mini"),
     )
 
 
-def _lmstudio_backend(user_message: str) -> dict[str, Any]:
+def _lmstudio_backend(user_message: str, preferences: Any = None) -> dict[str, Any]:
     base_url = os.getenv("LMSTUDIO_BASE_URL", "http://localhost:1234/v1")
     return _openai_compatible(
         user_message,
+        preferences,
         base_url=base_url,
         api_key=os.getenv("LMSTUDIO_API_KEY", "lm-studio"),
         model=os.getenv("LMSTUDIO_MODEL", "qwen/qwen3.5-9b"),
@@ -194,14 +297,14 @@ def _resolve_backend():
     return name, fn
 
 
-def _call_backend(user_message: str) -> tuple[str, dict[str, Any]]:
+def _call_backend(user_message: str, preferences: Any = None) -> tuple[str, dict[str, Any]]:
     """Call the configured backend with graceful fallback to the stub."""
     backend_name, fn = _resolve_backend()
     try:
-        return backend_name, fn(user_message)
+        return backend_name, fn(user_message, preferences)
     except Exception as exc:
         logging.warning("AI backend %r failed: %s. Falling back to stub.", backend_name, exc)
-        return "stub", _stub(user_message)
+        return "stub", _stub(user_message, preferences)
 
 
 def get_recommendation(user_message: str) -> str:
@@ -210,9 +313,9 @@ def get_recommendation(user_message: str) -> str:
     return f"{pick['name']} — ${float(pick['price']):.2f}. {pick['reason']}"
 
 
-def get_recommendation_struct(user_message: str) -> dict[str, Any]:
+def get_recommendation_struct(user_message: str, preferences: Any = None) -> dict[str, Any]:
     """Structured recommendation for /display/recommendations."""
-    _, pick = _call_backend(user_message)
+    _, pick = _call_backend(user_message, preferences)
     return {
         "name":        str(pick.get("name", "Chef's special")),
         "price":       float(pick.get("price", 0) or 0),
