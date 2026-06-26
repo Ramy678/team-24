@@ -90,7 +90,18 @@ def pick_from_pool(pool: list[dict[str, Any]], message: str) -> dict[str, Any]:
 # --- backend: stub ------------------------------------------------------
 
 
-def _stub(user_message: str) -> dict[str, Any]:
+def _stub(user_message: str, menu: list[dict] | None = None) -> dict:
+    if menu:
+        valid_items = [m for m in menu if not m.get("flagged")]
+        if valid_items:
+            item = _pick_fallback_from_list(user_message, valid_items)
+            return {
+                "name": item["name"],
+                "price": item["price"],
+                "description": "",
+                "ingredients": [],
+                "reason": "Picked from your uploaded menu.",
+            }
     return _pick_fallback(user_message)
 
 
@@ -210,9 +221,9 @@ def get_recommendation(user_message: str) -> str:
     return f"{pick['name']} — ${float(pick['price']):.2f}. {pick['reason']}"
 
 
-def get_recommendation_struct(user_message: str) -> dict[str, Any]:
+def get_recommendation_struct(user_message: str, menu: list[dict] | None = None) -> dict:
     """Structured recommendation for /display/recommendations."""
-    _, pick = _call_backend(user_message)
+    _, pick = _call_backend(user_message, menu)
     return {
         "name":        str(pick.get("name", "Chef's special")),
         "price":       float(pick.get("price", 0) or 0),

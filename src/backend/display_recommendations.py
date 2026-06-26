@@ -23,7 +23,8 @@ class Preferences(BaseModel):
 
 class RecommendationRequest(BaseModel):
     message: str = ""
-    preferences: Preferences | None = None
+    menu: list[dict] = []  # Из вашей ветки (для загруженного меню)
+    preferences: Preferences | None = None  # Из ветки main (для фильтрации и предпочтений)
 
 
 @router.post("/recommendations")
@@ -40,31 +41,35 @@ def display_recommendations(data: RecommendationRequest):
     """
     prefs = data.preferences
 
-    # Budget filter: pull from the stub pool exposed by `ai_service`.
-    # (When US-004-4 lands, this becomes `parser.parse_menu(...)` output.)
-    candidates = FALLBACK_POOL
+    
+    candidates = data.menu if data.menu else FALLBACK_POOL
+
+    
     if prefs is not None and prefs.max_budget is not None:
-        candidates = filter_by_budget(FALLBACK_POOL, prefs.max_budget)
+        candidates = filter_by_budget(candidates, prefs.max_budget)
         if not candidates:
+            
             return {"recommendations": []}
 
-    # Pick deterministically from the (possibly filtered) pool. If a budget
-    # filter was applied we must use the filtered pool; otherwise fall
-    # through to the AI backend (which may itself fall back to the stub).
-    if prefs is not None and prefs.max_budget is not None:
-        pick = pick_from_pool(candidates, data.message)
-    else:
-        pick = get_recommendation_struct(data.message)
+    
+    prefs_dict = prefs.dict() if prefs else None
+    pick = get_recommendation_struct(data.message, candidates, prefs_dict)
 
+    if not pick:
+        return {"recommendations": []}
+
+    
     dish = {
-        "name":        pick["name"],
-        "price":       pick["price"],
-        "description": pick["description"],
-        "ingredients": pick["ingredients"],
-        "reason":      pick["reason"],
+        "name":        str(pick.get("name", "Chef's special")),
+        "price":       pick.get("price"),
+        "description": str(pick.get("description", "")),
+        "ingredients": list(pick.get("ingredients", []) or []),
+        "reason":      str(pick.get("reason", "Recommended by AI")),
     }
+
+    
     return {
-        "session_id": session_id,
+        "session_id": session_id,  # Берется из глобального контекста файла
         "recommendations": [
             {
                 "id":          make_dish_id(dish),
