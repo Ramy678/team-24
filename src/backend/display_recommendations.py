@@ -1,7 +1,12 @@
 from fastapi import APIRouter
 from pydantic import BaseModel, Field
 
-from ai_service import FALLBACK_POOL, get_recommendation_struct, pick_from_pool
+from ai_service import (
+    FALLBACK_POOL,
+    filter_fallback_pool_by_preferences,
+    get_recommendation_struct,
+    pick_from_pool,
+)
 from budget_filter import filter_by_budget
 from order_history import make_dish_id
 
@@ -51,23 +56,34 @@ def display_recommendations(data: RecommendationRequest):
             
             return {"recommendations": []}
 
-    
+    if prefs is not None:
+        preferred_candidates = filter_fallback_pool_by_preferences(candidates, prefs)
+        if preferred_candidates:
+            candidates = preferred_candidates
+
     prefs_dict = prefs.dict() if prefs else None
-    pick = get_recommendation_struct(data.message, candidates, prefs_dict)
+
+    if prefs is not None and prefs.max_budget is not None:
+        pick = pick_from_pool(candidates, data.message)
+    else:
+        pick = get_recommendation_struct(
+            data.message,
+            preferences=prefs_dict,
+            menu=candidates,
+        )
 
     if not pick:
         return {"recommendations": []}
 
-    
     dish = {
-        "name":        str(pick.get("name", "Chef's special")),
-        "price":       pick.get("price"),
+        "name": str(pick.get("name", "Chef's special")),
+        "price": pick.get("price"),
         "description": str(pick.get("description", "")),
         "ingredients": list(pick.get("ingredients", []) or []),
-        "reason":      str(pick.get("reason", "Recommended by AI")),
+        "reason": str(pick.get("reason", "Recommended by AI")),
     }
 
-    
+   
     return {
         "session_id": session_id,  # Берется из глобального контекста файла
         "recommendations": [
