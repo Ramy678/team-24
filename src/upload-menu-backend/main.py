@@ -1,11 +1,26 @@
 import io
 
 from fastapi import FastAPI, File, HTTPException, UploadFile
+from parser import parse_menu
 from PIL import Image
 import pytesseract
+import os
 
+tesseract_path = os.environ.get("TESSERACT_PATH")
+if tesseract_path:
+    pytesseract.pytesseract.tesseract_cmd = tesseract_path
 app = FastAPI()
+from fastapi.middleware.cors import CORSMiddleware
+import os
 
+ALLOWED_ORIGINS = [o.strip() for o in os.getenv("ALLOWED_ORIGINS", "*").split(",") if o.strip()]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=ALLOWED_ORIGINS,
+    allow_methods=["GET", "POST"],
+    allow_headers=["*"],
+)
 # Maximum allowed image size: 8 MB
 MAX_IMAGE_SIZE = 8 * 1024 * 1024
 
@@ -58,15 +73,17 @@ async def upload_menu(photo: UploadFile = File(...)):
 
     # Run OCR
     try:
-        extracted_text = pytesseract.image_to_string(image)
+        extracted_text = pytesseract.image_to_string(image, lang='rus+eng')
     except Exception as exc:
         raise HTTPException(
             status_code=500,
             detail=f"OCR engine failed: {exc}",
         )
+    structured_menu = parse_menu(extracted_text)
 
     return {
         "status": "accepted",
         "filename": photo.filename,
         "extracted_text": extracted_text,
+        "menu": structured_menu,
     }

@@ -175,8 +175,24 @@ def filter_fallback_pool_by_preferences(
 # --- backend: stub ------------------------------------------------------
 
 
-def _stub(user_message: str, preferences: Any = None) -> dict[str, Any]:
-    pool = filter_fallback_pool_by_preferences(FALLBACK_POOL, preferences)
+def _stub(
+    user_message: str,
+    preferences: Any = None,
+    menu: list[dict] | None = None,
+) -> dict[str, Any]:
+    if menu:
+        valid_items = [m for m in menu if not m.get("flagged")]
+        if valid_items:
+            item = _pick_fallback_from_list(user_message, valid_items)
+            return {
+                "name": item["name"],
+                "price": item["price"],
+                "description": item.get("description", ""),
+                "ingredients": item.get("ingredients", []),
+                "reason": "Picked from your uploaded menu.",
+            }
+
+    pool = _filter_fallback_pool_by_preferences(FALLBACK_POOL, preferences)
     return pick_from_pool(pool, user_message)
 
 
@@ -313,9 +329,13 @@ def get_recommendation(user_message: str) -> str:
     return f"{pick['name']} — ${float(pick['price']):.2f}. {pick['reason']}"
 
 
-def get_recommendation_struct(user_message: str, preferences: Any = None) -> dict[str, Any]:
+def get_recommendation_struct(
+    user_message: str,
+    preferences: Any = None,
+    menu: list[dict] | None = None,
+) -> dict[str, Any]:
     """Structured recommendation for /display/recommendations."""
-    _, pick = _call_backend(user_message, preferences)
+    _, pick = _call_backend(user_message, preferences, menu)
     return {
         "name":        str(pick.get("name", "Chef's special")),
         "price":       float(pick.get("price", 0) or 0),
