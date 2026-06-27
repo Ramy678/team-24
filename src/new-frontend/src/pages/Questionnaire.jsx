@@ -42,10 +42,55 @@ const INGREDIENTS = [
 
 function FoodRecommenderForm() {
   const navigate = useNavigate();
-  const [formData, setFormData] = useState({cuisine: '', likes: [], dislikes: [], allergies: []});
+  const [formData, setFormData] = useState({cuisine: '', likes: [], dislikes: [], allergies: [], maxBudget: ''});
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
+  const [budgetError, setBudgetError] = useState('');
+  const [noDishesMessage, setNoDishesMessage] = useState('');
+
+  const validateBudget = (value) => {
+    setBudgetError('');
+    
+    if (value === '' || value === null || value === undefined) {
+      return true;
+    }
+    
+    const numValue = parseFloat(value);
+    
+    if (isNaN(numValue)) {
+      setBudgetError('Please enter a valid number');
+      return false;
+    }
+    
+    if (numValue <= 0) {
+      setBudgetError('Budget must be greater than 0');
+      return false;
+    }
+    
+    return true;
+  };
+
+  const handleBudgetChange = (e) => {
+    const value = e.target.value;
+    
+    if (value === '') {
+      setFormData({ ...formData, maxBudget: '' });
+      setBudgetError('');
+      return;
+    }
+    
+    const regex = /^\d*\.?\d*$/;
+    if (!regex.test(value)) {
+      setBudgetError('Only numbers and decimal point allowed');
+      return;
+    }
+    
+    const isValid = validateBudget(value);
+    if (isValid || value === '') {
+      setFormData({ ...formData, maxBudget: value });
+    }
+  };
 
   const handleCuisineChange = (e) => {
     setFormData({...formData, cuisine: e.target.value});
@@ -75,6 +120,11 @@ function FoodRecommenderForm() {
       setError('Please select at least one allergy (or "None" option).');
       return false;
     }
+
+    if (formData.maxBudget && !validateBudget(formData.maxBudget)) {
+      return false;
+    }
+
     return true;
   };
 
@@ -90,7 +140,7 @@ function FoodRecommenderForm() {
     setSubmitting(true);
 
     try {
-      const preferences = {cuisine: formData.cuisine, likes: formData.likes || [], dislikes: formData.dislikes || [], allergies: formData.allergies || []};
+      const preferences = {cuisine: formData.cuisine, likes: formData.likes || [], dislikes: formData.dislikes || [], allergies: formData.allergies || [], max_budget: formData.maxBudget ? parseFloat(formData.maxBudget) : null};
 
       const response = await fetch(`${API_BASE_URL}/recommendations`, {method: 'POST', headers: {'Content-Type': 'application/json',},
         body: JSON.stringify({preferences: preferences})
@@ -106,6 +156,14 @@ function FoodRecommenderForm() {
       }
 
       const data = await response.json();
+
+      if (data.recommendations && data.recommendations.length === 0) {
+        const budgetValue = formData.maxBudget || 'current';
+        setNoDishesMessage(`No dishes under $${budgetValue}. Try raising your budget.`);
+        setSubmitting(false);
+        return;
+      }
+
       localStorage.setItem('sessionId', data.sessionId);
       localStorage.setItem('userPreferences', JSON.stringify(preferences));
       
@@ -126,10 +184,13 @@ function FoodRecommenderForm() {
       cuisine: '',
       likes: [],
       dislikes: [],
-      allergies: []
+      allergies: [],
+      maxBudget: ''
     });
     setError('');
     setSuccess(false);
+    setBudgetError('');
+    setNoDishesMessage('');
   };
 
   const handleNoAllergies = () => {
@@ -234,6 +295,26 @@ function FoodRecommenderForm() {
             </div>
           </div>
 
+          <div className="form-group">
+            <label className="form-label">
+              Max Budget <span className="optional">(optional)</span>
+            </label>
+            <p className="hint">Set a maximum budget for your meal recommendations</p>
+            <div className="budget-input-wrapper">
+              <input
+                type="text"
+                id="maxBudget"
+                placeholder="e.g., 15"
+                value={formData.maxBudget || ''}
+                onChange={handleBudgetChange}
+                className={`form-input budget-input ${budgetError ? 'input-error' : ''}`}
+                disabled={submitting}
+              />
+              <span className="currency-suffix">$</span>
+            </div>
+            {budgetError && <span className="error-message">{budgetError}</span>}
+          </div>
+
           {error && (
             <div className="message error">
               {error}
@@ -245,6 +326,13 @@ function FoodRecommenderForm() {
               Preferences saved! Redirecting to upload menu...
             </div>
           )}
+
+          {noDishesMessage && (
+            <div className="message warning">
+              {noDishesMessage}
+            </div>
+          )}
+
 
           <div className="form-actions">
             <button
