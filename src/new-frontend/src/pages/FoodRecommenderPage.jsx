@@ -34,6 +34,7 @@ const FoodRecommenderPage = () => {
   const [dish, setDish] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [isSaved, setIsSaved] = useState(false);
 
   useEffect(() => {
     const loadData = async () => {
@@ -51,10 +52,35 @@ const FoodRecommenderPage = () => {
     loadData();
   }, []);
 
-  const handleOrder = () => {
-    alert(`"${dish.name}" Saved! Bon appétit`);
-    console.log('Ordered:', dish.name);
-  };
+  const handleOrder = async () => {
+  if (isSaved) return;
+  
+  try {
+    const userId = localStorage.getItem('userId') || 'user_123';
+    
+    const response = await fetch('http://localhost:8000/history/orders', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        user_id: userId,
+        dish: dish
+      }),
+    });
+
+    if (response.ok) {
+      setIsSaved(true);
+      alert(`"${dish.name}" Saved! Bon appétit`);
+      console.log('Ordered:', dish.name);
+    } else {
+      throw new Error('Failed to save');
+    }
+  } catch (err) {
+    console.error('Save error:', err);
+    alert('Failed to save order. Please try again.');
+  }
+};
 
   const handleAnotherOption = async () => {
     setLoading(true);
@@ -67,6 +93,7 @@ const FoodRecommenderPage = () => {
       setError('Failed to load recommendations');
     } finally {
       setLoading(false);
+      setIsSaved(false);
     }
   };
 
@@ -119,8 +146,12 @@ const FoodRecommenderPage = () => {
                 <div className="reason">{dish.reason}</div>
 
                 <div className="actions">
-                  <button className="btn-primary" onClick={handleOrder}>
-                    I'll order it
+                  <button 
+                    className={isSaved ? "btn-saved" : "btn-primary"} 
+                    onClick={handleOrder}
+                    disabled={isSaved}
+                  >
+                    {isSaved ? 'Saved' : "I'll order it"}
                   </button>
                   <button className="btn-secondary" onClick={handleAnotherOption}>
                     Another option
