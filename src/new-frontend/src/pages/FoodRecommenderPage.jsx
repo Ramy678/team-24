@@ -9,8 +9,7 @@ const FoodRecommenderPage = () => {
   const [dish, setDish] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [sessionId, setSessionId] = useState(null);
-  const [noMoreOptions, setNoMoreOptions] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
 
   useEffect(() => {
     const storedSessionId = localStorage.getItem('sessionId');
@@ -51,10 +50,35 @@ const FoodRecommenderPage = () => {
     loadData();
   }, []);
 
-  const handleOrder = () => {
-    alert(`"${dish.name}" Saved! Bon appétit`);
-    console.log('Ordered:', dish.name);
-  };
+  const handleOrder = async () => {
+  if (isSaved) return;
+  
+  try {
+    const userId = localStorage.getItem('userId') || 'user_123';
+    
+    const response = await fetch('http://localhost:8000/history/orders', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        user_id: userId,
+        dish: dish
+      }),
+    });
+
+    if (response.ok) {
+      setIsSaved(true);
+      alert(`"${dish.name}" Saved! Bon appétit`);
+      console.log('Ordered:', dish.name);
+    } else {
+      throw new Error('Failed to save');
+    }
+  } catch (err) {
+    console.error('Save error:', err);
+    alert('Failed to save order. Please try again.');
+  }
+};
 
   const handleAnotherOption = async () => {
     if (loading || noMoreOptions) {
@@ -101,6 +125,7 @@ const FoodRecommenderPage = () => {
       console.error('Error getting another option:', err);
     } finally {
       setLoading(false);
+      setIsSaved(false);
     }
   };
 
@@ -173,11 +198,11 @@ const FoodRecommenderPage = () => {
 
                 <div className="actions">
                   <button 
-                    className="btn-primary" 
+                    className={isSaved ? "btn-saved" : "btn-primary"} 
                     onClick={handleOrder}
-                    disabled={loading}
+                    disabled={isSaved}
                   >
-                    I'll order it
+                    {isSaved ? 'Saved' : "I'll order it"}
                   </button>
                   
                   <button 
