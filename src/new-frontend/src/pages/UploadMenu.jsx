@@ -84,8 +84,10 @@ function UploadMenu() {
         throw new Error(errorMsg);
       }
 
-      await response.json();
+      const data = await response.json();
+      localStorage.setItem('sessionId', data.sessionId);
       setSuccess('Menu uploaded successfully!');
+      
     } catch (err) {
       console.error('Upload failed:', err);
       setError(`${err.message || 'Upload failed'}`);
@@ -102,6 +104,7 @@ function UploadMenu() {
     setSuccess('');
     setError('');
     fileInputRef.current.value = '';
+    localStorage.removeItem('sessionId');
   };
 
   const handleChooseClick = () => {
@@ -109,7 +112,12 @@ function UploadMenu() {
   };
 
   const handleGoToRecommendations = () => {
-    navigate('/food-recommender');
+    const sessionId = localStorage.getItem('sessionId');
+    if (!sessionId) {
+      setError('Please upload a menu first to get recommendations.');
+      return;
+    }
+    navigate('/food-recommender-page');
   };
 
   return (
@@ -155,8 +163,12 @@ function UploadMenu() {
           {error && <div className="message error">{error}</div>}
           {success && <div className="message info">{success}</div>}
 
-          {preview && (
-            <button className="recommendations-btn" onClick={handleGoToRecommendations}>
+          {preview && success && (
+            <button 
+              className="recommendations-btn" 
+              onClick={handleGoToRecommendations}
+              style={{ marginTop: '15px' }}
+            >
               Get recommendations →
             </button>
           )}

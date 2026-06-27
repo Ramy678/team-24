@@ -5,6 +5,7 @@ import Footer from './components/common/Footer';
 import UploadMenu from './pages/UploadMenu';
 import HomePage from './pages/HomePage';
 import FoodRecommenderPage from './pages/FoodRecommenderPage';
+import Questionnaire from './pages/Questionnaire'; 
 import './styles/App.css';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/upload" element={<UploadMenu />} />
             <Route path="/food-recommender" element={<FoodRecommenderPage />} />
+            <Route path="/questionnaire" element={<Questionnaire/>} />
           </Routes>
         </main>
         <Footer />
