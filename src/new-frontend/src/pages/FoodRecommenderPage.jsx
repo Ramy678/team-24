@@ -55,6 +55,7 @@ const FoodRecommenderPage = () => {
       console.error('Error loading recommendations:', err);
     } finally {
       setLoading(false);
+      setIsSaved(false);
     }
   };
 
