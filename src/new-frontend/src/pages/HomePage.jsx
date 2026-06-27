@@ -10,12 +10,13 @@ function HomePage() {
       </div>
       
       <div className="features">
-        <Link to="/upload" style={{ textDecoration: 'none' }}>
+        <Link to="/questionnaire" style={{ textDecoration: 'none' }}>
           <div className="feature-card">
             <h3>Get recommendations</h3>
-            <p>Send us a photo of the menu and we'll show you recomendations</p>
+            <p>Tell us about your preferences and get personalized dish recommendations</p>
           </div>
         </Link>
+
       </div>
     </div>
   );
