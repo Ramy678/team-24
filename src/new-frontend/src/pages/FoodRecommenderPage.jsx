@@ -2,32 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import '../App.css';
 
-const dishesData = [
-  {
-    id: 1,
-    name: 'Chicken Noodle Soup',
-    price: 15.99,
-    description: 'Hearty soup with chicken and fresh herbs',
-    ingredients: ['Chicken', 'Noodles', 'Carrots', 'Onion'],
-    reason: 'Matches your budget • No allergens'
-  },
-  {
-    id: 2,
-    name: 'Greek Salad with Feta',
-    price: 12.50,
-    description: 'Fresh Mediterranean salad with olives and feta',
-    ingredients: ['Tomatoes', 'Cucumber', 'Feta', 'Olives'],
-    reason: 'Within your budget • Vegetarian'
-  },
-  {
-    id: 3,
-    name: 'Grilled Salmon with Vegetables',
-    price: 24.00,
-    description: 'Perfectly grilled salmon with seasonal vegetables',
-    ingredients: ['Salmon', 'Zucchini', 'Lemon', 'Rosemary'],
-    reason: 'Chef\'s recommendation • Popular dish'
-  }
-];
+const API_BASE_URL = 'https://team-24-1.onrender.com';
 
 const FoodRecommenderPage = () => {
   const navigate = useNavigate();
@@ -37,18 +12,41 @@ const FoodRecommenderPage = () => {
   const [isSaved, setIsSaved] = useState(false);
 
   useEffect(() => {
+    const storedSessionId = localStorage.getItem('sessionId');
+    
+    if (!storedSessionId) {
+      setError('Please upload a menu first to get recommendations.');
+      setLoading(false);
+      return;
+    }
+    
+    setSessionId(storedSessionId);
+    
     const loadData = async () => {
       try {
         setLoading(true);
-        await new Promise(resolve => setTimeout(resolve, 800));
-        setDish(dishesData[0]);
+        const response = await fetch(`${API_BASE_URL}/display/recommendation`, {
+          method: 'GET',
+          headers: {'Content-Type': 'application/json', 'session-id': storedSessionId,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to load recommendations');
+        }
+
+        const data = await response.json();
+        setDish(data.dish || data);
         setError(null);
+        setNoMoreOptions(false);
       } catch (err) {
         setError('Failed to load recommendations');
+        console.error('Error loading recommendations:', err);
       } finally {
         setLoading(false);
       }
     };
+
     loadData();
   }, []);
 
@@ -83,14 +81,48 @@ const FoodRecommenderPage = () => {
 };
 
   const handleAnotherOption = async () => {
+    if (loading || noMoreOptions) {
+      return;
+    }
+
     setLoading(true);
+    setError(null);
+
     try {
-      await new Promise(resolve => setTimeout(resolve, 800));
-      const randomIndex = Math.floor(Math.random() * dishesData.length);
-      setDish(dishesData[randomIndex]);
+      const response = await fetch(`${API_BASE_URL}/display/another-option`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json', 'session-id': sessionId,
+        },
+        body: JSON.stringify({ 
+          sessionId: sessionId,
+          currentDishId: dish?.id
+        }),
+      });
+
+      if (response.status === 404) {
+        setNoMoreOptions(true);
+        setError('No more options available');
+        setLoading(false);
+        return;
+      }
+
+      if (!response.ok) {
+        let errorMsg = 'Failed to get another option';
+        try {
+          const errData = await response.json();
+          errorMsg = errData.error || errorMsg;
+        } catch {}
+        throw new Error(errorMsg);
+      }
+
+      const data = await response.json();
+      setDish(data.dish || data);
       setError(null);
+      setNoMoreOptions(false);
+      
     } catch (err) {
-      setError('Failed to load recommendations');
+      setError(err.message || 'Failed to load another option');
+      console.error('Error getting another option:', err);
     } finally {
       setLoading(false);
       setIsSaved(false);
@@ -98,6 +130,7 @@ const FoodRecommenderPage = () => {
   };
 
   const handleEndSession = () => {
+    localStorage.removeItem('sessionId');
     navigate('/');
   };
 
@@ -110,11 +143,16 @@ const FoodRecommenderPage = () => {
     );
   }
 
-  if (error) {
+  if (error && !dish) {
     return (
       <div className="center">
         <h3 style={{ color: '#e53e3e' }}>{error}</h3>
-        <p>Please try again later.</p>
+        <button 
+          className="btn-primary" 
+          onClick={() => navigate('/')}
+        >
+          Go to Home
+        </button>
       </div>
     );
   }
@@ -123,6 +161,13 @@ const FoodRecommenderPage = () => {
     return (
       <div className="center">
         <p>No dishes found</p>
+        <button 
+          className="btn-secondary" 
+          onClick={() => navigate('/')}
+          style={{ marginTop: '20px' }}
+        >
+          Go to Home
+        </button>
       </div>
     );
   }
@@ -142,8 +187,14 @@ const FoodRecommenderPage = () => {
                 <h3>{dish.name}</h3>
                 <div className="price">${dish.price}</div>
                 <div className="desc">{dish.description}</div>
-                <div className="ingredients">{dish.ingredients.join(' • ')}</div>
-                <div className="reason">{dish.reason}</div>
+                <div className="ingredients">{dish.ingredients?.join(' • ') || ''}</div>
+                <div className="reason">{dish.reason || 'Recommended for you'}</div>
+
+                {error && (
+                  <div className="error-message" style={{ color: '#e53e3e', margin: '10px 0' }}>
+                    {error}
+                  </div>
+                )}
 
                 <div className="actions">
                   <button 
@@ -153,10 +204,22 @@ const FoodRecommenderPage = () => {
                   >
                     {isSaved ? 'Saved' : "I'll order it"}
                   </button>
-                  <button className="btn-secondary" onClick={handleAnotherOption}>
-                    Another option
+                  
+                  <button 
+                    className="btn-secondary" 
+                    onClick={handleAnotherOption}
+                    disabled={loading || noMoreOptions}
+                  >
+                    {loading ? 'Loading...' : 
+                     noMoreOptions ? 'No more options' : 
+                     'Another option'}
                   </button>
-                  <button className="btn-tertiary" onClick={handleEndSession}>
+                  
+                  <button 
+                    className="btn-tertiary" 
+                    onClick={handleEndSession}
+                    disabled={loading}
+                  >
                     End session
                   </button>
                 </div>
