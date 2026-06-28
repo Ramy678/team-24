@@ -88,8 +88,7 @@ The following quality metrics and checks were reviewed to ensure the stability o
   - *Note:* Links now point to the stable `main` branch commits as required.
 
 - **Error Handling:** 
-  - User-facing errors are handled gracefully via console logs and UI feedback (no raw stack traces shown to users).
-  - Specific attention paid to handling OCR upload failures and invalid budget inputs.
+  - User-facing errors are handled gracefully via console logs and UI feedback.
 
 ---
 
