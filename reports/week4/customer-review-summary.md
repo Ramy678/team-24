@@ -9,7 +9,7 @@
 
 | Participant | Role |
 |-------------|------|
-| Daria Gorshikova (dayon761) | Interviewer |
+| Daria Gorshikova (dayeon761) | Interviewer |
 | Polina Kharlova (Kharlova) | Note taker |
 | Adelina Khafizova (adelinamikki) | Interviewer |
 | Viktoriia Iakovleva (rxxtzz) | Note taker |
@@ -17,7 +17,7 @@
 
 ## Team Members
 
-- Daria Gorshikova (dayon761)
+- Daria Gorshikova (dayeon761)
 - Polina Kharlova (Kharlova)
 - Adelina Khafizova (adelinamikki)
 - Omar Nader (Ramy678)
