@@ -32,25 +32,22 @@ UAT scenarios are maintained product assets. Results are recorded per Sprint exe
 
 ---
 
-## UAT-02 — Menu Photo Upload and Recommendation
+## UAT-02 — Order Dish Confirmation
 
-**Related US:** [US-011 – Upload photo of a menu](https://github.com/Orderly-Team24/team-24/issues/62)
+**Related US:** [US-012 – Button "I'll order this dish"](https://github.com/Orderly-Team24/team-24/issues/146)
 
-**Precondition:** The app is deployed. The user has a JPEG or PNG photo of a restaurant menu (max 8 MB).
+**Precondition:** The app is deployed. The user has completed the questionnaire and reached the recommendation page.
 
 **Steps:**
-1. Open the app. The questionnaire page loads automatically.
-2. Select a cuisine type and set allergies (or click "No allergies").
-3. Click **"Next: Upload Menu →"**.
-4. On the Budget & Menu Photo page, click **"Choose Menu Photo"**.
-5. Select a JPEG or PNG menu photo from the device.
-6. Click **"Send for processing"**.
-7. Wait for the upload to complete and the recommendation to load.
+1. Complete UAT-01 or UAT-02 to reach the recommendation page.
+2. Click the **"I'll order this dish"** button on the recommendation card.
+3. Observe the message that appears.
 
 **Expected result:**
-- The photo is accepted without a format or size error.
-- OCR extracts text from the photo and parses the menu.
-- A recommendation card is displayed with a dish from the uploaded menu.
+- A confirmation message "Bon appétit!" is displayed.
+- No error message is shown.
+- The dish is NOT saved to order history (this feature is not implemented yet).
+- The button remains clickable and can be pressed again.
 
 **Status history:**
 
@@ -60,22 +57,25 @@ UAT scenarios are maintained product assets. Results are recorded per Sprint exe
 
 ---
 
-## UAT-03 — Save a Dish to Order History
+## UAT-03 — View Another Recommendation Option
 
-**Related US:** [US-012 – Button "I'll order dish"](https://github.com/Orderly-Team24/team-24/issues/146)
+**Related US:** [US-013 – Button "Another option"](https://github.com/Orderly-Team24/team-24/issues/147)
 
 **Precondition:** The app is deployed. The user has completed the questionnaire and reached the recommendation page.
 
 **Steps:**
-1. Complete UAT-01 or UAT-02 to reach the recommendation card.
-2. Click the **"I'll order it"** button on the recommendation card.
-3. Observe the button state.
-4. Try clicking the button again.
+1. Complete UAT-01 or UAT-02 to reach the recommendation page.
+2. Click the **"Another option"** button below the recommendation card.
+3. Wait for the new recommendation to load.
+4. Observe the new dish recommendation.
+5. Repeat steps 2-4 two more times.
 
 **Expected result:**
-- The button changes to **"Saved ✓"** and becomes disabled.
-- No error message is shown.
-- Clicking the button again has no effect (no duplicate saved).
+- A new dish recommendation is displayed each time.
+- The new dish is different from the previous recommendation(s).
+- The dish price still respects the user's budget constraint.
+- No error or "Failed to fetch" message is shown.
+- The button remains functional for multiple uses.
 
 **Status history:**
 
