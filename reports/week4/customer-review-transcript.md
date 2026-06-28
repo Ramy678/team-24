@@ -1,4 +1,14 @@
-# Meet - Meeting with the customer 4
+# Customer Review Transcript 4
+
+**Date:** 28.06.2026
+
+**Participants:** 
+- Customer: Product Owner
+- Interviewer: adelinamikki
+
+**Permissions:**
+- Recording: Granted
+- Public Publication: Granted
 
 ---
 
