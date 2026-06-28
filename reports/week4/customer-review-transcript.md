@@ -95,4 +95,4 @@
 '00:08:56' - OK. OK, thank you. So I guess that's it. Thank you for your review.
 
 **Customer:**
-'00:09:07' - Goodbye
+'00:09:07' - Goodbye.
