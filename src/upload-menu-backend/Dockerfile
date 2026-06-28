@@ -19,6 +19,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 # Source.
 COPY src/upload-menu-backend/main.py ./
+COPY src/upload-menu-backend/parser.py ./
 
 # Tesseract data is owned by root; allow appuser to read it.
 # (Tesseract writes nothing at runtime, so no extra write perms needed.)
