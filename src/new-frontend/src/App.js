@@ -3,9 +3,8 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Header from './components/common/Header';
 import Footer from './components/common/Footer';
 import UploadMenu from './pages/UploadMenu';
-import HomePage from './pages/HomePage';
 import FoodRecommenderPage from './pages/FoodRecommenderPage';
-import Questionnaire from './pages/Questionnaire'; 
+import Questionnaire from './pages/Questionnaire';
 import './styles/App.css';
 
 function App() {
@@ -15,10 +14,9 @@ function App() {
         <Header />
         <main className="main-content">
           <Routes>
-            <Route path="/" element={<HomePage />} />
+            <Route path="/" element={<Questionnaire />} />
             <Route path="/upload" element={<UploadMenu />} />
             <Route path="/food-recommender" element={<FoodRecommenderPage />} />
-            <Route path="/questionnaire" element={<Questionnaire/>} />
           </Routes>
         </main>
         <Footer />
