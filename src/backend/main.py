@@ -3,17 +3,20 @@ from fastapi import FastAPI, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from ai_service import get_recommendation
 from display_recommendations import router as display_router
-
+from history_router import router as history_router
+from another_option import router as another_option_router
 ALLOWED_ORIGINS = [o.strip() for o in os.getenv("ALLOWED_ORIGINS", "*").split(",") if o.strip()]
 
 app = FastAPI()
 app.add_middleware(
     CORSMiddleware,
     allow_origins=ALLOWED_ORIGINS,
-    allow_methods=["GET", "POST"],
+    allow_methods=["GET", "POST", "DELETE"],
     allow_headers=["*"],
 )
 app.include_router(display_router)
+app.include_router(history_router)
+
 
 MAX_FILE_SIZE = 8 * 1024 * 1024  # 8 MB
 
