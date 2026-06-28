@@ -81,7 +81,7 @@ All future work will be governed by the Assignment 4 artifacts:
 
 
 ## Sprint Reports & Retrospectives
-- **Customer Review Summary:** [customer review summary]([customer-review-summary.md])
+- **Customer Review Summary:** [customer review summary](customer-review-summary.md)
 - **Sprint Reflection:** [Week 4 Reflection](reflection.md)
 - **Retrospective:** [Week 4 Retrospective](retrospective.md)
 - **LLM Report:** [LLM Report](llm-report.md)
