@@ -32,8 +32,6 @@ COPY src/backend/ocr_reader.py ./
 COPY src/backend/parser.py ./
 COPY src/backend/retriever.py ./
 COPY src/backend/recommendation_session.py ./
-COPY src/backend/data/ ./data/
-COPY src/backend/food_database/ ./food_database/
 
 # Run as non-root for safety.
 RUN useradd --create-home appuser && chown -R appuser /app
