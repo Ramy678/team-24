@@ -2,13 +2,11 @@ FROM python:3.12-slim
 
 WORKDIR /app
 
-COPY src/backend/requirements.txt ./
+COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Copy all backend source files at once (excludes are in src/backend/.dockerignore)
-COPY src/backend/ ./
+COPY . ./
 
-# Run as non-root for safety.
 RUN useradd --create-home appuser && chown -R appuser /app
 USER appuser
 
