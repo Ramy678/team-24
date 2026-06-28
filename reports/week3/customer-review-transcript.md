@@ -1,5 +1,15 @@
 # Meet – Meeting with the customer 3
 
+**Date:** 19.06.2026
+
+**Participants:** 
+- Customer: Product Owner
+- Interviewer: adelinamikki
+
+**Permissions:**
+- Recording: Granted
+- Public Publication: Granted
+
 ---
 
 ## Transcript
