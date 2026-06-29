@@ -1,7 +1,9 @@
-from fastapi import APIRouter
+from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, Field
+from recommendation_session import create_session, mark_shown
 
 from ai_service import (
+    AIServiceUnavailableError,
     FALLBACK_POOL,
     filter_fallback_pool_by_preferences,
     get_recommendation_struct,
@@ -28,9 +30,8 @@ class Preferences(BaseModel):
 
 class RecommendationRequest(BaseModel):
     message: str = ""
-    menu: list[dict] = []  # Из вашей ветки (для загруженного меню)
-    preferences: Preferences | None = None  # Из ветки main (для фильтрации и предпочтений)
-
+    menu: list[dict] = [] 
+    preferences: Preferences | None = None 
 
 @router.post("/recommendations")
 def display_recommendations(data: RecommendationRequest):
@@ -61,16 +62,22 @@ def display_recommendations(data: RecommendationRequest):
         if preferred_candidates:
             candidates = preferred_candidates
 
-    prefs_dict = prefs.dict() if prefs else None
+    prefs_dict = prefs.model_dump() if prefs else None
 
-    if prefs is not None and prefs.max_budget is not None:
-        pick = pick_from_pool(candidates, data.message)
-    else:
-        pick = get_recommendation_struct(
-            data.message,
-            preferences=prefs_dict,
-            menu=candidates,
-        )
+    try:
+        if prefs is not None and prefs.max_budget is not None:
+            pick = pick_from_pool(candidates, data.message)
+        else:
+            pick = get_recommendation_struct(
+                data.message,
+                preferences=prefs_dict,
+                menu=candidates,
+            )
+    except AIServiceUnavailableError as exc:
+        raise HTTPException(
+            status_code=503,
+            detail="AI service is temporarily unavailable. Please try again later.",
+        ) from exc
 
     if not pick:
         return {"recommendations": []}
@@ -83,9 +90,7 @@ def display_recommendations(data: RecommendationRequest):
         "reason": str(pick.get("reason", "Recommended by AI")),
     }
 
-   
     return {
-        "session_id": session_id,  # Берется из глобального контекста файла
         "recommendations": [
             {
                 "id":          make_dish_id(dish),

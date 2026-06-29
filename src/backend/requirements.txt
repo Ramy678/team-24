@@ -11,6 +11,12 @@ fastapi==0.137.2
 uvicorn[standard]==0.49.0
 pydantic==2.13.4
 openai>=2.43,<3
+python-multipart==0.0.20
+
+# Database
+sqlalchemy>=2.0,<3
+alembic>=1.13,<2
+psycopg2-binary>=2.9
 
 # Test-only. Move to requirements-dev.txt when you split things up.
 pytest==9.1.1

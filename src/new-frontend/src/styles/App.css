@@ -475,3 +475,155 @@ body {
     font-size: 24px;
   }
 }
+
+
+
+
+
+.preferences-form {
+  width: 100%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.form-group {
+  margin-bottom: 30px;
+}
+
+.form-label {
+  display: block;
+  font-weight: 600;
+  font-size: 16px;
+  margin-bottom: 8px;
+  color: #2d3748;
+}
+
+.form-label .required {
+  color: #e53e3e;
+}
+
+.form-label .optional {
+  color: #a0aec0;
+  font-weight: 400;
+  font-size: 14px;
+}
+
+.form-select {
+  width: 100%;
+  padding: 12px 16px;
+  border: 2px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 16px;
+  background: white;
+  transition: border-color 0.3s;
+  cursor: pointer;
+}
+
+.form-select:focus {
+  outline: none;
+  border-color: #3182ce;
+}
+
+.form-select:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.ingredients-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 8px;
+}
+
+.chip {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 2px solid #e2e8f0;
+  background: white;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+  color: #4a5568;
+}
+
+.chip:hover:not(:disabled) {
+  transform: scale(1.05);
+}
+
+.chip:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.chip-inactive {
+  background: white;
+  border-color: #e2e8f0;
+}
+
+.chip-inactive:hover:not(:disabled) {
+  background: #f7fafc;
+  border-color: #cbd5e0;
+}
+
+.chip-active-like {
+  background: #48bb78;
+  border-color: #48bb78;
+  color: white;
+}
+
+.chip-active-dislike {
+  background: #fc8181;
+  border-color: #fc8181;
+  color: white;
+}
+
+.chip-active-danger {
+  background: #e53e3e;
+  border-color: #e53e3e;
+  color: white;
+}
+
+.btn-none {
+  background: transparent;
+  border: 1px dashed #a0aec0;
+  padding: 6px 16px;
+  border-radius: 20px;
+  color: #718096;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.2s;
+}
+
+.btn-none:hover:not(:disabled) {
+  background: #f7fafc;
+  border-color: #718096;
+}
+
+.btn-none:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.form-actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 20px;
+  flex-wrap: wrap;
+}
+
+.form-actions .submit-btn {
+  flex: 2;
+  min-width: 200px;
+}
+
+.form-actions .remove-btn {
+  flex: 1;
+  min-width: 100px;
+}
+
+.hint {
+  font-size: 14px;
+  color: #718096;
+  margin: 4px 0 0 0;
+}
