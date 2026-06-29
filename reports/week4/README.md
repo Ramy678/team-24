@@ -23,10 +23,14 @@
 
 ## Customer Feedback & Response
 | Feedback Point | Resulting PBI / Issue |
-| --- | --- |
+| :--- | :--- |
+| Preferences are not saved after page refresh; user has to re-enter them each time | new issue — Implement preferences persistence (cookies/localStorage) |
+| "Another option" sometimes returns the same dish instead of a different one | new issue — Fix "Another option" to return distinct recommendations |
+| Cuisine selection is not helpful, replace with taste-based preferences (sweet, spicy, etc.) | new issue — Replace cuisine selection with taste-based preferences |
+| No order history yet | [#149](https://github.com/Orderly-Team24/team-24/issues/149) — US-015: Managing history of orders |
 
 ### Feedback Not Addressed
-[]
+OCR and AI not connected to frontend - deferred to Sprint 3, requires additional development.
 
 ## Documentation
 - **Roadmap:** [docs/roadmap.md](../../docs/roadmap.md)
@@ -66,20 +70,27 @@ All future work will be governed by the Assignment 4 artifacts:
 - **CHANGELOG.md:** [CHANGELOG.md](../../CHANGELOG.md)
 
 ## Presentation & Media
-- **Demo Video:** []
-- **Presentation Slides:** []
-- **UAT Results Summary:** []
-- **Customer Review Transcript:** []
+- **Demo Video:** [video](https://drive.google.com/file/d/15KcZhWxZc0COzW0FGXIrOBryH1YQ4cq3/view?usp=sharing)
+- **Presentation Slides:** [presentation](https://docs.google.com/presentation/d/1SNAzJcnGL-ysbFUlnl2ymxmEgd72nhBRrQzrYioJWyQ/edit?usp=sharing)
+- **Customer Review Transcript:** [customer review transcript](customer-review-transcript.md)
+
+## UAT Results Summary
+- **UAT-01** (Budget filtering) - Passed
+- **UAT-02** (Order confirmation) - Passed
+- **UAT-03** (Another option) - Partial (sometimes returns the same dish)
+
 
 ## Sprint Reports & Retrospectives
-- **Customer Review Summary:** []
+- **Customer Review Summary:** [customer review summary](customer-review-summary.md)
 - **Sprint Reflection:** [Week 4 Reflection](reflection.md)
 - **Retrospective:** [Week 4 Retrospective](retrospective.md)
 - **LLM Report:** [LLM Report](llm-report.md)
 
 ## Current Status & Next Steps
-- **Current Product Status:** []
-- **Next Steps:** []
+- **Current Product Status:**
+- Questionnaire, budget filtering, default menu recommendations, and UI flow are working.
+- OCR + AI are not yet connected to the frontend; preferences do not persist after page refresh.
+- **Next Steps:**  Implement preferences persistence (cookies/localStorage) and fix "Another option" to return distinct recommendations. Also connect OCR + AI to the frontend and start order history.
 
 ## Contribution Traceability
 
@@ -94,16 +105,14 @@ All future work will be governed by the Assignment 4 artifacts:
 
 ## Visual Evidence (Screenshots)
 ### Sprint Milestone
-![Sprint Milestone]()
+![Sprint Milestone](images/sprint-milestone.png)
 ### Latest Protected-Branch CI Run
-![CI Run]()
+![CI Run](images/backend-ci.png)
 ### Branch Protection / Rules Evidence
-![Branch Protection]()
+![Branch Protection](images/branch-protection-or-rules-evidence.png)
 ### Coverage / Test Report
-![Coverage Report]()
-### Additional QA Check Result
-![QA Check]()
+![Coverage Report](images/link-check.png)
 ### SemVer Release
-![SemVer Release]()
+![SemVer Release](images/SemVer-release.png)
 ### Example Reviewed Issue-linked PR/MR
-![PR Review Example]()
+![PR Review Example](images/example-reviewed-issue-linked-PR.png)
