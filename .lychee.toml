@@ -3,7 +3,8 @@
 exclude = [
     "https://www.figma.com/*",
     "https://keen-pegasus-a95a6a.netlify.app/",
-    ".*PUBLIC_URL.*"
+    ".*PUBLIC_URL.*",
+    "file://.*"
 ]
 
 include_extensions = [
